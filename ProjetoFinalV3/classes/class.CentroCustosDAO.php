@@ -2,6 +2,7 @@
 	
 	/*
 		Classe criado por João Pedro em 04/10/2018
+		Métodos listar e buscar criado por Guilherme Mayer em 01/10/2018
 	*/
 	require_once('class.DbAdmin.php');
 	require_once('class.CentroCustos.php');
@@ -42,11 +43,11 @@
 			$sql = 'DELETE FROM centro_custos
 					WHERE id = '.$id;
 
-			$rs = $conexao->query($sql);
+			$rs = $this->conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			//if($conexao->rows_affected($rs) == 1){
 				return true;
-			}
+			//}
 
 			return false;
 		}
@@ -60,13 +61,54 @@
 					SET nome = "'.$nome.'"
 					WHERE id = '.$id;
 
-			$rs = $conexao->query($rs);
+			$rs = $this->conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			//if($conexao->rows_affected($rs) == 1){
 				return true;
-			}
+			//}
 
 			return false;
+		}
+
+		public function listar(){
+
+			$dba = $this->conexao;
+			
+			$sql = 'SELECT *FROM centro_custos';
+
+			$res = $dba->query($sql);
+			$num = $dba->rows_result($res);
+
+			for($i=0;$i<$num;$i++){
+				$id = $dba->result($res,$i,'id');
+				$nome = $dba->result($res,$i,'nome');
+
+				$cd = new CentroCustos();
+				$cd->setId($id);
+				$cd->setNome($nome);
+
+				$vetCD[] = $cd;
+			}
+			if($num>0){
+				return $vetCD;
+			}else{
+				return false;
+			}
+		}
+
+		public function buscar($id){
+			
+			$dba = $this->conexao;
+
+			$sql = "SELECT *FROM centro_custos WHERE id=$id";
+			$res = $dba->query($sql);
+			$temp = mysql_fetch_assoc($res);
+
+			$cd = new CentroCustos();
+			$cd->setId($id);
+			$cd->setNome($temp['nome']);
+
+			return $cd;
 		}
 
 	}
