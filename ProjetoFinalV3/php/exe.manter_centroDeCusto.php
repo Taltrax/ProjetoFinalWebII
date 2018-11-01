@@ -25,27 +25,45 @@
 	</div>
 
 	<div class="row">
-		<div class="mx-auto mw-auto mb-2">
+		<div class="mx-auto mw-auto mb-2" style="padding-right: 115px;">
 			<h6>Novo centro de custo</h6>
 		</div>
 	</div>
 
+	<!-- Verifica se o formulário é de cadastro ou edição -->
+	<?php
+		if(isset($_GET['aux'])){
+			$acao = $_GET['aux'];
+		}else{ $acao = 'Inserir'; }
+	?>
+
 	<div class="row mb-5">
 		<div class="mx-auto mw-auto">
-			<form class="form-inline" action="php/acao.centroDeCusto.php?op=add" method="POST"> 
+			<form class="form-inline" action="php/acao.centroDeCusto.php?op=<?php echo $acao; ?>" method="POST"> 
 				<div class="form-group mx-sm-1">
-					<input class="form-control" type="text" id="novocd" name="novocd">
+					<?php 
 
+						if(isset($_GET['id'])){
+							echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
+						}
+
+						if(isset($_GET['cd'])){
+							echo '<input class="form-control" type="text" id="novocd" name="novocd" value="'.$_GET['cd'].'">';
+						}else{
+							echo '<input class="form-control" type="text" id="novocd" name="novocd">';
+						}
+
+					?>
 				</div>
 				<div class="form-group mx-sm-1">
-					<button class="btn btn-primary md-6" type="submit">Inserir</button> 
+					<button class="btn btn-primary md-6" type="submit"><?php echo $acao ?></button> 
 				</div>
 			</form>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class=" mx-auto mw-auto">
+		<div class="mx-auto mw-auto">
 			<?php require_once("exe.listagem_centroDeCusto.php"); ?>
 		</div>
 	</div>
