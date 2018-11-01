@@ -102,15 +102,15 @@
 
 			$sql = "SELECT *FROM centro_custos WHERE id=$id";
 			$res = $dba->query($sql);
-			$temp = mysql_fetch_assoc($res);
 
 			$cd = new CentroCustos();
-			$cd->setId($id);
-			$cd->setNome($temp['nome']);
-
+			$cd->setId($dba->result($res,0,'id'));
+			$cd->setNome($dba->result($res,0,'nome'));
+			
 			return $cd;
 		}
 
 	}
 
 ?>
+
