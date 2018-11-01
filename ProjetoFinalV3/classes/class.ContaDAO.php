@@ -101,11 +101,11 @@
 
 			$sql = "SELECT *FROM contas WHERE id=$id";
 			$res = $dba->query($sql);
-			$temp = mysql_fetch_assoc($res);
+
 
 			$ca = new Conta();
-			$ca->setId($id);
-			$ca->setNome($temp['nome']);
+			$ca->setId($dba->result($res,0,'id'));
+			$ca->setNome($dba->result($res,0,'nome'));
 
 			return $ca;
 		}
