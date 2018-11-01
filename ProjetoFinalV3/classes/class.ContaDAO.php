@@ -2,6 +2,7 @@
 	
 	/*
 		Classe criado por João Pedro em 04/10/2018
+		Métodos buscar e listar criado por Guilherme Mayer em 01/11/2018
 	*/
 	require_once('class.DbAdmin.php');
 	require_once('class.Conta.php');
@@ -25,11 +26,11 @@
 					VALUES (NULL,
 							"'.$nome.'")';
 
-			$rs = $conexao->query($sql);
+			$rs = $this->conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			//if($conexao->rows_affected($rs) == 1){
 				return true;
-			}
+			//}
 
 			return false;
 		}
@@ -41,11 +42,11 @@
 			$sql = 'DELETE FROM contas
 					WHERE id = '.$id;
 
-			$rs = $conexao->query($sql);
+			$rs = $this->conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			//if($conexao->rows_affected($rs) == 1){
 				return true;
-			}
+			//}
 
 			return false;
 		}
@@ -59,14 +60,56 @@
 					SET nome = "'.$nome.'"
 					WHERE id = '.$id;
 
-			$rs = $conexao->query($rs);
+			$rs = $this->conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			//if($conexao->rows_affected($rs) == 1){
 				return true;
-			}
+			//}
 
 			return false;
 		}
+
+		public function listar(){
+
+			$dba = $this->conexao;
+			
+			$sql = 'SELECT *FROM contas';
+
+			$res = $dba->query($sql);
+			$num = $dba->rows_result($res);
+
+			for($i=0;$i<$num;$i++){
+				$id = $dba->result($res,$i,'id');
+				$nome = $dba->result($res,$i,'nome');
+
+				$conta = new Conta();
+				$conta->setId($id);
+				$conta->setNome($nome);
+
+				$vc[] = $conta;
+			}
+			if($num>0){
+				return $vc;
+			}else{
+				return false;
+			}
+		}
+
+		public function buscar($id){
+			
+			$dba = $this->conexao;
+
+			$sql = "SELECT *FROM contas WHERE id=$id";
+			$res = $dba->query($sql);
+			$temp = mysql_fetch_assoc($res);
+
+			$ca = new Conta();
+			$ca->setId($id);
+			$ca->setNome($temp['nome']);
+
+			return $ca;
+		}
+
 
 	}
 
