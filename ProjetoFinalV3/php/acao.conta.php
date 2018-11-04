@@ -1,66 +1,85 @@
 <?php
 
-	require_once("..\classes\class.Conta.php");
-	require_once("..\classes\class.ContaDAO.php");
+	/*
+		Criado por Guilherme Mayer
+		Em: 17/10/2018
+	*/
+	require_once('..\classes\class.ContaDAO.php');
 
-	if(isset($_GET['op'])){
-
-		$op = $_GET['op'];
-
-		switch ($op) {
+	switch ($_REQUEST['acao']) {
 			
-			case 'Inserir':
-				$nova_conta = new Conta();
-				$nova_conta->setNome($_POST['nova_conta']);
-				$nova_contaDAO = new ContaDAO();
-				$result = $nova_contaDAO->addConta($nova_conta);
-			
-				if($result==true){
-					$result = 'Conta <b>'.$nova_conta->getNome().'</b> inserida com sucesso!';
-				}
-				header("Location: ..\index.php?secao=manter&modulo=conta&info=".$result);
-				break;
-			
-			case 'Editar':
-				$up_ca = new Conta();
-				$up_ca->setId($_POST['id']);
-				$up_ca->setNome($_POST['nova_conta']);
-				
-				$upDAO = new ContaDAO();
-				$result = $upDAO->altConta($up_ca);
-				
-				if($result==true){
-					$result = 'Conta editada com sucesso!';
-				}else{
-					$result = 'Falha ao editar conta!';
-				}
-				header("Location: ..\index.php?secao=manter&modulo=conta&info=".$result);
-
-				break;
-			
-			case 'Deletar':
-				$ca = new Conta();
-				$ca->setId($_GET['id']);
-
-				$delDAO = new ContaDAO();
-				$result = $delDAO->delConta($ca);
-
-				if($result==true){
-					$result = 'Conta removida com sucesso!';
-				}else{
-					$result = 'Falha ao remover conta!';
-				}
-				header("Location: ..\index.php?secao=manter&modulo=conta&info=".$result);
-				break;
+		case 'cadastrar':{
 		
-			case 'Buscar':{
-				if(isset($_GET['id'])){ 
-					$alt = new ContaDAO();
-					$temp = $alt->buscar($_GET['id']);
-					header("Location: ..\index.php?secao=manter&modulo=conta&aux=Editar&conta=".$temp->getNome()."&id=".$temp->getID());
-				}
+			$nova_conta = new Conta();
+			$nova_conta->setNome($_POST['nova_conta']);
+			$nova_contaDAO = new ContaDAO();
+			$result = $nova_contaDAO->addConta($nova_conta);
+			
+			if($result){
+
+				$sucesso = urlencode('Conta <b>'.$nova_conta->getNome().'</b> cadastrada com sucesso!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&sucesso='.$sucesso));
+			
+			}else{
+
+				$erro = urlencode('Erro ao cadastrar a conta!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&erro='.$erro));
 			}
+			
+			break;
 
 		}
+			
+		case 'alterar':{
+
+			$up_ca = new Conta();
+			$up_ca->setId($_POST['id']);
+			$up_ca->setNome($_POST['nova_conta']);
+				
+			$upDAO = new ContaDAO();
+			$result = $upDAO->altConta($up_ca);
+				
+			if($result){
+
+				$sucesso = urlencode('Sucesso ao alterar a conta!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&sucesso='.$sucesso));
+			
+			}else{
+				
+				$erro = urlencode('Erro ao alterar a conta!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&id='.$up_ca->getId().'&erro='.$erro));
+
+			}
+			
+			break;
+		}
+			
+		case 'deletar':{
+		
+			$ca = new Conta();
+			$ca->setId($_GET['id']);
+
+			$delDAO = new ContaDAO();
+			$result = $delDAO->delConta($ca);
+
+			if($result){
+
+				$sucesso = urlencode('Sucesso ao excluir a conta!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&sucesso='.$sucesso));
+			
+			}else{
+				
+				$erro = urlencode('Erro ao excluir a conta!');
+				die(header('Location: ..\index.php?secao=manter&modulo=conta&erro='.$erro));
+
+			}
+		
+			break;
+		}
+
+		default:
+			die('Ação inválida');
+		
 	}
+	
 ?>

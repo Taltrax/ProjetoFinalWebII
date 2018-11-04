@@ -73,12 +73,17 @@
 
 			$dba = $this->conexao;
 			
-			$sql = 'SELECT *FROM contas';
+			$sql = 'SELECT * FROM contas';
 
 			$res = $dba->query($sql);
 			$num = $dba->rows_result($res);
 
+			if($num == 0){
+				return false;
+			}
+
 			for($i=0;$i<$num;$i++){
+				
 				$id = $dba->result($res,$i,'id');
 				$nome = $dba->result($res,$i,'nome');
 
@@ -86,22 +91,23 @@
 				$conta->setId($id);
 				$conta->setNome($nome);
 
-				$vc[] = $conta;
+				$contas[] = $conta;
+			
 			}
-			if($num>0){
-				return $vc;
-			}else{
-				return false;
-			}
+
+			return $contas;
 		}
 
 		public function buscar($id){
 			
 			$dba = $this->conexao;
 
-			$sql = "SELECT *FROM contas WHERE id=$id";
+			$sql = "SELECT * FROM contas WHERE id=$id";
 			$res = $dba->query($sql);
 
+			if($dba->rows_result($res) == 0){
+				return false;
+			}
 
 			$ca = new Conta();
 			$ca->setId($dba->result($res,0,'id'));
