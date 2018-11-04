@@ -3,65 +3,50 @@
 	Em: 17/10/2018
 	REV 1: 01/11/2018
 -->
-	<div class="row">
-		<div class="mx-auto mw-auto">
-			<!-- Verifica alteração no banco -->
-			<?php
-				if(isset($_GET['info'])){
-					echo '<div class="alert alert-success" role="alert">';
-						echo $_GET['info'];
-					echo '</div>';
-				}
-			?>
-		</div>
-	</div>
+<?php 
+	require_once('index.manter_conta.php');
+?>
 
-	<div class="row mb-2">
-		<div class="mx-auto mw-auto">
-			<h5>Contas</h5>
-		</div>
-	</div>
+<div class="container-fluid">
 
-	<div class="row">
-		<div class="mx-auto mw-auto mb-2" style="padding-right: 200px;">
-			<h6>Nova conta</h6>
-		</div>
-	</div>
 
-	<!-- Verifica se o formulário é de cadastro ou edição -->
+	<!-- Mensagens de alerta -->
 	<?php
-		if(isset($_GET['aux'])){
-			$acao = $_GET['aux'];
-		}else{ $acao = 'Inserir'; }
+
+		if(isset($_GET['sucesso']) and !empty($_GET['sucesso'])){
+
+			$msg = $_GET['sucesso'];
+			echo '<div class="alert alert-success text-center" role="alert">
+					'.$msg.'
+				</div>';
+
+		}elseif(isset($_GET['erro']) and !empty($_GET['erro'])){
+
+			$msg = $_GET['erro'];
+			echo '<div class="alert alert-danger text-center" role="alert">
+					'.$msg.'
+				</div>';
+		}
 	?>
 
-	<div class="row mb-5">
-		<div class="mx-auto mw-auto">
-			<form class="form-inline" action="php/acao.conta.php?op=<?php echo $acao; ?>" method="POST"> 
-				<div class="form-group mx-sm-1">
-					<?php 
+	<h5 class="text-center">Contas</h5>
 
-						if(isset($_GET['id'])){
-							echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
-						}
-
-						if(isset($_GET['conta'])){
-							echo '<input class="form-control" type="text" id="nova_conta" name="nova_conta" value="'.$_GET['conta'].'">';
-						}else{
-							echo '<input class="form-control" type="text" id="nova_conta" name="nova_conta">';
-						}
-
-					?>
-				</div>
-				<div class="form-group mx-sm-1">
-					<button class="btn btn-primary md-6" type="submit"><?php echo $acao ?></button> 
-				</div>
-			</form>
+	<form class="form-inline" action="php/acao.conta.php" method="POST">
+		
+		<div class="mx-auto mb-4">
+			
+			<label for="nova_conta" class="mb-2">Nome</label>
+			<input type="text" class="form-control" id="nova_conta" name="nova_conta" value="<?php echo $nome ?>" required="required" />
+			<button type="submit" class="btn btn-primary"><?php echo strtoupper($acao) ?></button>
+		
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="mx-auto mw-auto">
-			<?php require_once("exe.listagem_conta.php"); ?>
-		</div>
-	</div>
+		<input type="hidden" name="id" value="<?php echo $id ?>"/>
+		<input type="hidden" name="acao" value="<?php echo $acao ?>"/>
+
+	</form>
+
+
+	<?php require_once("exe.listagem_conta.php"); ?>
+	
+</div>
