@@ -1,69 +1,52 @@
 <!-- 
 	Criado por: Guilherme Mayer
-	Em: 11/10/2018
-	REV 1 - 30/10/2018
+	Em: 17/10/2018
+	REV 1: 08/11/2018
 -->
+<?php 
+	require_once('index.manter_centroDeCusto.php');
+?>
+
 <div class="container-fluid">
 
-	<div class="row">
-		<div class="mx-auto mw-auto">
-			<!-- Verifica alteração no banco -->
-			<?php
-				if(isset($_GET['info'])){
-					echo '<div class="alert alert-success" role="alert">';
-						echo $_GET['info'];
-					echo '</div>';
-				}
-			?>
-		</div>
-	</div>
 
-	<div class="row mb-2">
-		<div class="mx-auto mw-auto">
-			<h5>Centros de Custos</h5>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="mx-auto mw-auto mb-2" style="padding-right: 115px;">
-			<h6>Novo centro de custo</h6>
-		</div>
-	</div>
-
-	<!-- Verifica se o formulário é de cadastro ou edição -->
+	<!-- Mensagens de alerta -->
 	<?php
-		if(isset($_GET['aux'])){
-			$acao = $_GET['aux'];
-		}else{ $acao = 'Inserir'; }
+
+		if(isset($_GET['sucesso']) and !empty($_GET['sucesso'])){
+
+			$msg = $_GET['sucesso'];
+			echo '<div class="alert alert-success text-center" role="alert">
+					'.$msg.'
+				</div>';
+
+		}elseif(isset($_GET['erro']) and !empty($_GET['erro'])){
+
+			$msg = $_GET['erro'];
+			echo '<div class="alert alert-danger text-center" role="alert">
+					'.$msg.'
+				</div>';
+		}
 	?>
 
-	<div class="row mb-5">
-		<div class="mx-auto mw-auto">
-			<form class="form-inline" action="php/acao.centroDeCusto.php?op=<?php echo $acao; ?>" method="POST"> 
-				<div class="form-group mx-sm-1">
-					<?php 
+	<h5 class="text-center">Centros de Custos</h5>
 
-						if(isset($_GET['id'])){
-							echo '<input type="hidden" name="id" value="'.$_GET['id'].'">';
-						}
-
-						if(isset($_GET['cd'])){
-							echo '<input class="form-control" type="text" id="novocd" name="novocd" value="'.$_GET['cd'].'">';
-						}else{
-							echo '<input class="form-control" type="text" id="novocd" name="novocd">';
-						}
-
-					?>
-				</div>
-				<div class="form-group mx-sm-1">
-					<button class="btn btn-primary md-6" type="submit"><?php echo $acao ?></button> 
-				</div>
-			</form>
+	<form class="form-inline" action="php/acao.centroDeCusto.php" method="POST">
+		
+		<div class="mx-auto mb-4">
+			
+			<label for="novo_cc" class="mb-2">Nome</label>
+			<input type="text" class="form-control" id="novo_cc" name="novo_cc" value="<?php echo $nome ?>" required="required" />
+			<button type="submit" class="btn btn-primary"><?php echo strtoupper($acao) ?></button>
+		
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="mx-auto mw-auto">
-			<?php require_once("exe.listagem_centroDeCusto.php"); ?>
-		</div>
-	</div>
+		<input type="hidden" name="id" value="<?php echo $id ?>"/>
+		<input type="hidden" name="acao" value="<?php echo $acao ?>"/>
+
+	</form>
+
+
+	<?php require_once("exe.listagem_centroDeCusto.php"); ?>
+	
+</div>
