@@ -46,13 +46,13 @@
 						<div class="form-group">
 							
 							<label for="f_valor" class="col-form-label">Valor</label>
-							<input type="text" class="form-control" name="f_valor" id="f_valor">
+							<input type="text" class="form-control" name="f_valor" id="f_valor" required="required">
 
 							<label for="f_centro_custos">Centro Custo</label>
-							<select name="f_centro_custos" id="f_centro_custos" class="form-control">
+							<select name="f_centro_custos" id="f_centro_custos" class="form-control" required="required">
 								
 								<option selected="selected"></option>
-								
+
 								<?php
 
 									foreach ($centrosCustos as $centroC) {
@@ -64,8 +64,8 @@
 							</select>
 
 							<label for="f_conta">Conta</label>
-							<select name="f_conta" id="f_conta" class="form-control">
-								
+							<select name="f_conta" id="f_conta" class="form-control" required="required">
+
 								<option selected="selected"></option>
 								
 								<?php
@@ -79,10 +79,10 @@
 							</select>
 
 							<label for="f_data">Data</label>
-							<input class="form-control" type="date" name="f_data" id="f_data">
+							<input class="form-control" type="date" name="f_data" id="f_data" required="required">
 
 							<label for="f_descricao" class="col-form-label">Descrição</label>
-							<textarea class="form-control" name="f_descricao" id="f_descricao" rows="4" style="resize: none;"></textarea>
+							<textarea class="form-control" name="f_descricao" id="f_descricao" rows="4" style="resize: none;" required="required"></textarea>
 							
 						</div>
 
@@ -211,13 +211,16 @@
 							if($creditos){
 
 								foreach ($creditos as $credito) {
+
+								$ccTemp = $ccDAO->buscar($credito->getIdCentroCustos());
+								$contaTemp = $cDAO->buscar($credito->getIdConta());
 								
 								echo	
 									'<tr>
 										<th class="text-center" scope="row">R$ '.$credito->getValor().'</th>
-										<td class="text-center">'.$credito->getIdCentroCustos().'</td>
+										<td class="text-center">'.$ccTemp->getNome().'</td>
 										<td class="text-center">'.$credito->getData().'</td>	
-										<td class="text-center">'.$credito->getIdConta().'</td>
+										<td class="text-center">'.$contaTemp->getNome().'</td>
 										<td class="text-center">
 							                <a href="#" onclick="criarModal(this)">
 							                	<img src="img/icones/document_icon.png" />
