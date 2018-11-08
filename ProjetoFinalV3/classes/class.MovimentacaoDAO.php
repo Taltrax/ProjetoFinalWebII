@@ -2,6 +2,7 @@
 	
 	/*
 		Classe criado por João Pedro em 04/10/2018
+		Classe atualizada por Guilherme Mayer em 08/11/2018
 	*/	
 	require_once('class.DbAdmin.php');
 	require_once('class.movimentacao.php');
@@ -128,6 +129,71 @@
 			}
 
 			return $creditos;
+
+		}
+
+		public function buscarDebitos(){
+
+			$conexao = $this->conexao;
+
+			$sql = 'SELECT *,
+					date_format(movimentacao.data, "%d/%m/%Y") as data_formatada
+					FROM movimentacao
+					WHERE tipo_mov = "debito"
+					ORDER BY data ASC';
+
+			$rs = $conexao->query($sql);
+
+			$linhas = $conexao->rows_result($rs);
+
+			if($linhas == 0){
+				return false;
+			}
+
+			for($i=0; $i<$linhas; $i++){
+
+				$debito = new Movimentacao();
+				$debito->setId($conexao->result($rs, $i, 'id'));
+				$debito->setIdCentroCustos($conexao->result($rs, $i, 'id_centro_custos'));
+				$debito->setIdConta($conexao->result($rs, $i, 'id_conta'));
+				$debito->setTipoMov($conexao->result($rs, $i, 'tipo_mov'));
+				$debito->setData($conexao->result($rs, $i, 'data_formatada'));
+				$debito->setDescricao($conexao->result($rs, $i, 'descricao'));
+				$debito->setValor($conexao->result($rs, $i, 'valor'));
+
+				$debitos[] = $debito;
+
+			}
+
+			return $debitos;
+
+		}
+
+		public function buscarDebito($idMovimentacao){
+
+
+			$conexao = $this->conexao;
+
+			$sql = 'SELECT *
+					FROM movimentacao
+					WHERE id = '.$idMovimentacao;
+
+			$rs = $conexao->query($sql);
+
+			if($conexao->rows_result($rs) == 0){
+				return false;
+			}
+
+			$debito = new Movimentacao();
+			$debito->setId($conexao->result($rs, 0, 'id'));
+			$debito->setIdCentroCustos($conexao->result($rs, 0, 'id_centro_custos'));
+			$debito->setIdConta($conexao->result($rs, 0, 'id_conta'));
+			$debito->setTipoMov($conexao->result($rs, 0, 'tipo_mov'));
+			$debito->setData($conexao->result($rs, 0, 'data'));
+			$debito->setDescricao($conexao->result($rs, 0, 'descricao'));
+			$debito->setValor($conexao->result($rs, 0, 'valor'));
+			
+			return $debito;
 
 		}
 
