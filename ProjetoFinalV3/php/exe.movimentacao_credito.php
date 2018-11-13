@@ -41,18 +41,18 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao_credito.php">
+					<form method="POST" action="php/acao.movimentacao.php" name="formulario">
 
 						<div class="form-group">
 							
 							<label for="f_valor" class="col-form-label">Valor</label>
-							<input type="text" class="form-control" name="f_valor" id="f_valor" required="required">
+							<input type="text" class="form-control valor" name="f_valor" id="f_valor">
 
 							<label for="f_centro_custos">Centro Custo</label>
-							<select name="f_centro_custos" id="f_centro_custos" class="form-control" required="required">
+							<select name="f_centro_custos" id="f_centro_custos" class="form-control">
 								
 								<option selected="selected"></option>
-
+								
 								<?php
 
 									foreach ($centrosCustos as $centroC) {
@@ -64,8 +64,8 @@
 							</select>
 
 							<label for="f_conta">Conta</label>
-							<select name="f_conta" id="f_conta" class="form-control" required="required">
-
+							<select name="f_conta" id="f_conta" class="form-control">
+								
 								<option selected="selected"></option>
 								
 								<?php
@@ -79,10 +79,10 @@
 							</select>
 
 							<label for="f_data">Data</label>
-							<input class="form-control" type="date" name="f_data" id="f_data" required="required">
+							<input class="form-control" type="date" name="f_data" id="f_data">
 
 							<label for="f_descricao" class="col-form-label">Descrição</label>
-							<textarea class="form-control" name="f_descricao" id="f_descricao" rows="4" style="resize: none;" required="required"></textarea>
+							<textarea class="form-control" name="f_descricao" id="f_descricao" rows="4" style="resize: none;"></textarea>
 							
 						</div>
 
@@ -113,20 +113,20 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao_credito.php">
+					<form method="POST" action="php/acao.movimentacao.php">
 
 						<div class="form-group">
 							
-							<label for="f_valor" class="col-form-label">Valor</label>
-							<input type="text" class="form-control" name="f_valor" id="f_valor" value="<?php echo $credito->getValor() ?>">
+							<label for="f_valor_alt" class="col-form-label">Valor</label>
+							<input type="text" class="form-control valor" name="f_valor" id="f_valor_alt" value="<?php echo $credito->getValor() ?>">
 
-							<label for="f_centro_custos">Centro Custo</label>
-							<select name="f_centro_custos" id="f_centro_custos" class="form-control">
+							<label for="f_centro_custos_alt">Centro Custo</label>
+							<select name="f_centro_custos" id="f_centro_custos_alt" class="form-control">
 								<?php
 
 									foreach ($centrosCustos as $centroC) {
 
-										if($centroC->getId() == $credito->getIdCentroCustos()){
+										if($centroC->getId() == $credito->getCentroCustos()->getId()){
 											echo '<option value='.$centroC->getId().' selected="selected">'.$centroC->getNome().'</option>';
 										
 										}else{
@@ -138,13 +138,13 @@
 								?>
 							</select>
 
-							<label for="f_conta">Conta</label>
-							<select name="f_conta" id="f_conta" class="form-control">
+							<label for="f_conta_alt">Conta</label>
+							<select name="f_conta" id="f_conta_alt" class="form-control">
 								<?php
 
 									foreach ($contas as $conta) {
 
-										if($conta->getId() == $credito->getIdConta()){
+										if($conta->getId() == $credito->getConta()->getId()){
 											echo '<option value='.$conta->getId().' selected="selected">'.$conta->getNome().'</option>';
 										
 										}else{
@@ -156,11 +156,11 @@
 								?>
 							</select>
 
-							<label for="f_data">Data</label>
-							<input class="form-control" type="date" name="f_data" id="f_data" value="<?php echo $credito->getData() ?>">
+							<label for="f_data_alt">Data</label>
+							<input class="form-control" type="date" name="f_data" id="f_data_alt" value="<?php echo $credito->getData() ?>">
 
-							<label for="f_descricao" class="col-form-label">Descrição</label>
-							<textarea class="form-control" name="f_descricao" id="f_descricao" rows="4" style="resize: none;"><?php echo $credito->getDescricao() ?></textarea>
+							<label for="f_descricao_alt" class="col-form-label">Descrição</label>
+							<textarea class="form-control" name="f_descricao" id="f_descricao_alt" rows="4" style="resize: none;"><?php echo $credito->getDescricao() ?></textarea>
 							
 						</div>
 
@@ -211,16 +211,13 @@
 							if($creditos){
 
 								foreach ($creditos as $credito) {
-
-								$ccTemp = $ccDAO->buscar($credito->getIdCentroCustos());
-								$contaTemp = $cDAO->buscar($credito->getIdConta());
 								
 								echo	
 									'<tr>
 										<th class="text-center" scope="row">R$ '.$credito->getValor().'</th>
-										<td class="text-center">'.$ccTemp->getNome().'</td>
+										<td class="text-center">'.$credito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$credito->getData().'</td>	
-										<td class="text-center">'.$contaTemp->getNome().'</td>
+										<td class="text-center">'.$credito->getConta()->getNome().'</td>
 										<td class="text-center">
 							                <a href="#" onclick="criarModal(this)">
 							                	<img src="img/icones/document_icon.png" />
@@ -233,7 +230,7 @@
 											</a>
 										</td>
 										<td class="text-center">
-											<a href="php/acao.movimentacao_credito.php?acao=deletar&id='.$credito->getId().'">
+											<a href="php/acao.movimentacao.php?acao=deletar&f_tipo_mov=credito&id='.$credito->getId().'">
 												<img src="img/icones/delete_icon.png" title="Deletar" />
 											</a>
 										</td>
