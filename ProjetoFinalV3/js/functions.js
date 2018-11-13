@@ -4,6 +4,7 @@
 
 window.onload = () => {
 
+	formataValor();
 	abreModalAlteracao();	
 
 }
@@ -18,3 +19,8 @@ function abreModalAlteracao(){
 	}
 
 }
+
+function formataValor(){
+	$('.valor').mask('#.##0,00', {reverse: true});
+}
+
