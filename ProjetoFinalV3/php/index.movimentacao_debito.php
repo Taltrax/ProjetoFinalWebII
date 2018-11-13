@@ -19,7 +19,7 @@
 
 		$id = $_GET['id'];
 
-		$debito = $movDAO->buscarDebito($id);
+		$debito = $movDAO->buscarMovimentacao($id);
 		
 		if(!$debito){
 			die('Id inválido');
@@ -27,7 +27,7 @@
 
 	}
 
-	$debitos = $movDAO->buscarDebitos();
+	$debitos = $movDAO->buscarMovimentacoes("debito");
 	$centrosCustos = $ccDAO->listar();
 	$contas = $cDAO->listar();
 
