@@ -3,15 +3,26 @@
 	/*
 		Classe criada por Guilherme Mayer em 04/10/2018
 	*/
+
+	require_once('class.CentroCustos.php');
+	require_once('class.Conta.php');
+
 	class Movimentacao{
 
 		private $id;
-		private $idCentroCustos;
-		private $idConta;
+		private $centroCustos;
+		private $conta;
 		private $tipoMov;
 		private $data;
 		private $descricao;
 		private $valor;
+
+		public function Movimentacao(){
+
+			$this->centroCustos = new CentroCustos();
+			$this->conta = new Conta();
+
+		}
 
 		public function getId(){
 			return $this->id;
@@ -21,20 +32,20 @@
 			$this->id = $id;
 		}
 
-		public function getIdCentroCustos(){
-			return $this->idCentroCustos;
+		public function getCentroCustos(){
+			return $this->centroCustos;
 		}
 
-		public function setIdCentroCustos($id){
-			$this->idCentroCustos = $id;
+		public function setCentroCustos($centroCustos){
+			$this->centroCustos = $centroCustos;
 		}
 
-		public function getIdConta(){
-			return $this->idConta;
+		public function getConta(){
+			return $this->conta;
 		}
 
-		public function setIdConta($conta){
-			$this->idConta = $conta;
+		public function setConta($conta){
+			$this->conta = $conta;
 		}
 
 		public function getTipoMov(){
