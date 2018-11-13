@@ -2,6 +2,7 @@
 	
 	/*
 		Classe criado por João Pedro em 04/10/2018
+		Classe atualizada por Guilherme Mayer em 08/11/2018
 	*/	
 	require_once('class.DbAdmin.php');
 	require_once('class.movimentacao.php');
@@ -21,8 +22,8 @@
 
 			$conexao = $this->conexao;
 
-			$idCentroCustos = $movimentacao->getIdCentroCustos();
-			$idConta = $movimentacao->getIdConta();
+			$idCentroCustos = $movimentacao->getCentroCustos()->getId();
+			$idConta = $movimentacao->getConta()->getId();
 			$tipoMov = $movimentacao->getTipoMov();
 			$data = $movimentacao->getData();
 			$descricao = $movimentacao->getDescricao();
@@ -69,8 +70,8 @@
 			$conexao = $this->conexao;
 
 			$id = $movimentacao->getId();
-			$idCentroCustos = $movimentacao->getIdCentroCustos();
-			$idConta = $movimentacao->getIdConta();
+			$idCentroCustos = $movimentacao->getCentroCustos()->getId();
+			$idConta = $movimentacao->getConta()->getId();
 			$tipoMov = $movimentacao->getTipoMov();
 			$data = $movimentacao->getData();
 			$descricao = $movimentacao->getDescricao();
@@ -94,14 +95,19 @@
 			return false;
 		}
 
-		public function buscarCreditos(){
+		public function buscarMovimentacoes($tipo){
 
 			$conexao = $this->conexao;
 
-			$sql = 'SELECT *,
-					date_format(movimentacao.data, "%d/%m/%Y") as data_formatada
-					FROM movimentacao
-					WHERE tipo_mov = "credito"
+			$sql = 'SELECT mov.*, cc.nome as nome_cc, contas.nome as nome_conta,
+					date_format(mov.data, "%d/%m/%Y") as data_formatada,
+					format(mov.valor, 2, "de_DE") as valor_formatado
+					FROM movimentacao as mov
+					INNER JOIN centro_custos as cc 
+					ON mov.id_centro_custos = cc.id 
+					INNER JOIN contas
+					ON mov.id_conta = contas.id
+					WHERE tipo_mov = "'.$tipo.'"
 					ORDER BY data ASC';
 
 			$rs = $conexao->query($sql);
@@ -114,31 +120,42 @@
 
 			for($i=0; $i<$linhas; $i++){
 
-				$credito = new Movimentacao();
-				$credito->setId($conexao->result($rs, $i, 'id'));
-				$credito->setIdCentroCustos($conexao->result($rs, $i, 'id_centro_custos'));
-				$credito->setIdConta($conexao->result($rs, $i, 'id_conta'));
-				$credito->setTipoMov($conexao->result($rs, $i, 'tipo_mov'));
-				$credito->setData($conexao->result($rs, $i, 'data_formatada'));
-				$credito->setDescricao($conexao->result($rs, $i, 'descricao'));
-				$credito->setValor($conexao->result($rs, $i, 'valor'));
+				$movimentacao = new Movimentacao();
+				$movimentacao->setId($conexao->result($rs, $i, 'id'));
 
-				$creditos[] = $credito;
+				$movimentacao->getCentroCustos()->setId($conexao->result($rs, $i, 'id_centro_custos'));
+				$movimentacao->getCentroCustos()->setNome($conexao->result($rs, $i, 'nome_cc'));
+
+				$movimentacao->getConta()->setId($conexao->result($rs, $i, 'id_conta'));
+				$movimentacao->getConta()->setNome($conexao->result($rs, $i, 'nome_conta'));
+
+				$movimentacao->setTipoMov($conexao->result($rs, $i, 'tipo_mov'));
+				$movimentacao->setData($conexao->result($rs, $i, 'data_formatada'));
+				$movimentacao->setDescricao($conexao->result($rs, $i, 'descricao'));
+				$movimentacao->setValor($conexao->result($rs, $i, 'valor_formatado'));
+
+				$movs[] = $movimentacao;
 
 			}
 
-			return $creditos;
+			return $movs;
 
 		}
 
-		public function buscarCredito($idMovimentacao){
+		public function buscarMovimentacao($id){
 
 
 			$conexao = $this->conexao;
 
-			$sql = 'SELECT *
-					FROM movimentacao
-					WHERE id = '.$idMovimentacao;
+			$sql = 'SELECT mov.*, cc.nome as nome_cc, contas.nome as nome_conta,
+					date_format(mov.data, "%d/%m/%Y") as data_formatada,
+					format(mov.valor, 2, "de_DE") as valor_formatado
+					FROM movimentacao as mov
+					INNER JOIN centro_custos as cc 
+					ON mov.id_centro_custos = cc.id 
+					INNER JOIN contas 
+					ON mov.id_conta = contas.id
+					WHERE mov.id = '.$id;
 
 			$rs = $conexao->query($sql);
 
@@ -146,16 +163,21 @@
 				return false;
 			}
 
-			$credito = new Movimentacao();
-			$credito->setId($conexao->result($rs, 0, 'id'));
-			$credito->setIdCentroCustos($conexao->result($rs, 0, 'id_centro_custos'));
-			$credito->setIdConta($conexao->result($rs, 0, 'id_conta'));
-			$credito->setTipoMov($conexao->result($rs, 0, 'tipo_mov'));
-			$credito->setData($conexao->result($rs, 0, 'data'));
-			$credito->setDescricao($conexao->result($rs, 0, 'descricao'));
-			$credito->setValor($conexao->result($rs, 0, 'valor'));
+			$movimentacao = new Movimentacao();
+			$movimentacao->setId($conexao->result($rs, 0, 'id'));
+
+			$movimentacao->getCentroCustos()->setId($conexao->result($rs, 0, 'id_centro_custos'));
+			$movimentacao->getCentroCustos()->setNome($conexao->result($rs, 0, 'nome_cc'));
+
+			$movimentacao->getConta()->setId($conexao->result($rs, 0, 'id_conta'));
+			$movimentacao->getConta()->setNome($conexao->result($rs, 0, 'nome_conta'));
+
+			$movimentacao->setTipoMov($conexao->result($rs, 0, 'tipo_mov'));
+			$movimentacao->setData($conexao->result($rs, 0, 'data'));
+			$movimentacao->setDescricao($conexao->result($rs, 0, 'descricao'));
+			$movimentacao->setValor($conexao->result($rs, 0, 'valor_formatado'));
 			
-			return $credito;
+			return $movimentacao;
 
 		}
 
