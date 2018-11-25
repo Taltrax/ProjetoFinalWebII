@@ -41,6 +41,7 @@
 		
 		</div>
 
+		<input type="hidden" name="saldo" value="<?php echo $saldo ?>">
 		<input type="hidden" name="id" value="<?php echo $id ?>"/>
 		<input type="hidden" name="acao" value="<?php echo $acao ?>"/>
 

@@ -41,7 +41,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php" name="formulario">
+					<form method="POST" action="php/acao.movimentacao_credito.php" name="formulario">
 
 						<div class="form-group">
 							
@@ -113,7 +113,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php">
+					<form method="POST" action="php/acao.movimentacao_credito.php">
 
 						<div class="form-group">
 							
@@ -198,7 +198,7 @@
 							<th class="text-center" scope="col">C. Custo</th>
 							<th class="text-center" scope="col">Data</th>
 							<th class="text-center" scope="col">Conta</th>
-							<th class="text-center" scope="col-md">Descricao</th>
+							<th class="text-center" scope="col-md">Descrição</th>
 							<th class="text-center" scope="col" colspan="2" class="text-center">Ações</th>
 						</tr>
 
@@ -214,7 +214,7 @@
 								
 								echo	
 									'<tr>
-										<th class="text-center" scope="row">R$ '.$credito->getValor().'</th>
+										<td class="text-center" scope="row">R$ '.$credito->getValor().'</td>
 										<td class="text-center">'.$credito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$credito->getData().'</td>	
 										<td class="text-center">'.$credito->getConta()->getNome().'</td>
@@ -230,7 +230,7 @@
 											</a>
 										</td>
 										<td class="text-center">
-											<a href="php/acao.movimentacao.php?acao=deletar&f_tipo_mov=credito&id='.$credito->getId().'">
+											<a href="php/acao.movimentacao_credito.php?acao=deletar&id='.$credito->getId().'">
 												<img src="img/icones/delete_icon.png" title="Deletar" />
 											</a>
 										</td>

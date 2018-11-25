@@ -3,7 +3,9 @@
 	/*
 		Criado por Guilherme Mayer
 		Em: 17/10/2018
+		Rev 1: 22/11/2018
 	*/
+
 	require_once('..\classes\class.ContaDAO.php');
 
 	switch ($_REQUEST['acao']) {
@@ -35,6 +37,8 @@
 			$up_ca = new Conta();
 			$up_ca->setId($_POST['id']);
 			$up_ca->setNome($_POST['nova_conta']);
+			$saldo = str_replace(['.',','],['','.'],$_POST['saldo']);
+			$up_ca->setSaldo($saldo);
 				
 			$upDAO = new ContaDAO();
 			$result = $upDAO->altConta($up_ca);

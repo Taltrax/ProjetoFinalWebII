@@ -43,7 +43,7 @@
 					Relatórios
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=credito">Item x</a>
+					<a class="dropdown-item" href="index.php?secao=relatorio&modulo=centroDeCusto">Centro de Custo</a>
 					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=debito">Item x</a>
 					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=recorrente">Item x</a>
 					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=parcela">Item x</a>

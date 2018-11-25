@@ -15,6 +15,8 @@
 		$conta = $contaDAO->buscar($id);
 
 		$nome = $conta->getNome();
+
+		$saldo = $conta->getSaldo();
 	
 	}else{
 		$acao = 'cadastrar';
