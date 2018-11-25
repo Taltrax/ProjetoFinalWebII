@@ -20,17 +20,18 @@
 
 		public function addConta($conta){
 
-			$nome = $conta->getNome(); 
+			$nome = $conta->getNome();
 
 			$sql = 'INSERT INTO contas
 					VALUES (NULL,
-							"'.$nome.'")';
+							"'.$nome.'",
+								0)';
 
 			$rs = $this->conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
 		}
@@ -44,9 +45,9 @@
 
 			$rs = $this->conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
 		}
@@ -55,25 +56,48 @@
 
 			$id = $conta->getId();
 			$nome = $conta->getNome();
+			$saldo = $conta->getSaldo();
 
 			$sql = 'UPDATE contas
-					SET nome = "'.$nome.'"
+					SET nome = "'.$nome.'",
+						saldo = '.$saldo.'
+					WHERE id = '.$id;
+			
+			$rs = $this->conexao->query($sql);
+
+			if($rs){
+				return true;
+			}
+
+			return false;
+		}
+/*
+		public function altSaldo($conta){
+
+			$id = $conta->getId();
+			$saldo = $conta->getSaldo();
+
+			$sql = 'UPDATE contas
+					SET saldo = '.$saldo.'
 					WHERE id = '.$id;
 
 			$rs = $this->conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
-		}
+
+		}*/
 
 		public function listar(){
 
 			$dba = $this->conexao;
 			
-			$sql = 'SELECT * FROM contas';
+			$sql = 'SELECT *,
+					format(saldo,2, "de_DE") AS saldo_formatado 
+					FROM contas';
 
 			$res = $dba->query($sql);
 			$num = $dba->rows_result($res);
@@ -86,10 +110,12 @@
 				
 				$id = $dba->result($res,$i,'id');
 				$nome = $dba->result($res,$i,'nome');
+				$saldo = $dba->result($res, $i, 'saldo_formatado');
 
 				$conta = new Conta();
 				$conta->setId($id);
 				$conta->setNome($nome);
+				$conta->setSaldo($saldo);
 
 				$contas[] = $conta;
 			
@@ -102,7 +128,10 @@
 			
 			$dba = $this->conexao;
 
-			$sql = "SELECT * FROM contas WHERE id=$id";
+			$sql = "SELECT *,
+					format(saldo, 2, 'de_DE') AS saldo_formatado 
+					FROM contas WHERE id=$id";
+
 			$res = $dba->query($sql);
 
 			if($dba->rows_result($res) == 0){
@@ -112,7 +141,8 @@
 			$ca = new Conta();
 			$ca->setId($dba->result($res,0,'id'));
 			$ca->setNome($dba->result($res,0,'nome'));
-
+			$ca->setSaldo($dba->result($res,0,'saldo_formatado'));
+	
 			return $ca;
 		}
 

@@ -95,7 +95,15 @@
 			return false;
 		}
 
-		public function buscarMovimentacoes($tipo){
+		public function buscarMovimentacoes($tipo='', $limit=''){
+
+			if($tipo){
+				$tipo = 'WHERE tipo_mov = "'.$tipo.'"';
+			}
+
+			if($limit){
+				$limit = 'LIMIT '.$limit;
+			}
 
 			$conexao = $this->conexao;
 
@@ -106,9 +114,10 @@
 					INNER JOIN centro_custos as cc 
 					ON mov.id_centro_custos = cc.id 
 					INNER JOIN contas
-					ON mov.id_conta = contas.id
-					WHERE tipo_mov = "'.$tipo.'"
-					ORDER BY data ASC';
+					ON mov.id_conta = contas.id '.
+					$tipo.' 
+					ORDER BY data ASC '.
+					$limit;
 
 			$rs = $conexao->query($sql);
 
@@ -178,6 +187,20 @@
 			$movimentacao->setValor($conexao->result($rs, 0, 'valor_formatado'));
 			
 			return $movimentacao;
+
+		}
+
+		public function salvarLog($movimentacao){
+
+			$arquivo = fopen('../log.txt', 'a');
+			
+			$log = date('d/m/Y', strtotime($movimentacao->getData()));
+			$log .= ' - '.$movimentacao->getTipoMov();
+			$log .=	' - '.number_format($movimentacao->getValor(), 2, ',', '.');
+			$log .= PHP_EOL;
+
+			fwrite($arquivo, $log);
+			fclose($arquivo);
 
 		}
 
