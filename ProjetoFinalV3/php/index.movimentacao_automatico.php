@@ -4,6 +4,8 @@
 		Criado por: João Pedro da Silva Fernandes
 		Em: 02/12/2018
 	*/
+	
+	date_default_timezone_set('America/Sao_Paulo');
 
 	require_once('classes/class.RecorrenteDAO.php');
 	require_once('classes/class.RecorrenteMovDAO.php');
