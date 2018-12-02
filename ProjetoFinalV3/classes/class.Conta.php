@@ -8,6 +8,7 @@
 		private $id;
 		private $nome;
 		private $saldo;
+		private $status;
 
 		public function getId(){
 			return $this->id;
@@ -33,19 +34,12 @@
 			$this->saldo = $saldo;
 		}
 
-		public function addValor($valor){
-			$this->saldo += $valor;
+		public function getStatus(){
+			return $this->status;
 		}
 
-		public function removeValor($valor){
-
-			if($valor > $this->saldo){
-				return false;
-			}
-
-			$this->saldo -= $valor;
-			return true;
-
+		public function setStatus($status){
+			$this->status = $status;
 		}
 
 	}

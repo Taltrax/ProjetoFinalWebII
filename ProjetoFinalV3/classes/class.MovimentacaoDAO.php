@@ -6,6 +6,7 @@
 	*/	
 	require_once('class.DbAdmin.php');
 	require_once('class.movimentacao.php');
+	require_once('class.RecorrenteMovDAO.php');
 
 	class MovimentacaoDAO{
 
@@ -41,7 +42,7 @@
 			$rs = $conexao->query($sql);
 
 			if($rs){
-				return true;
+				return $conexao->lastid();
 			}
 
 			return false;
@@ -50,8 +51,15 @@
 		public function delMovimentacao($movimentacao){
 
 			$conexao = $this->conexao;
+			$recMov = new RecorrenteMov();
+			$recMovDAO = new RecorrenteMovDAO();
 
 			$id = $movimentacao->getId();
+
+			$recMov->setIdRecorrente(-1);
+			$recMov->setIdMovimentacao($id);
+			$recMovDAO->delRecorrenteMov($recMov);
+
 
 			$sql = 'DELETE FROM movimentacao
 					WHERE id = '.$id;
@@ -86,6 +94,7 @@
 						valor = '.$valor.'
 					WHERE id = '.$id;
 
+
 			$rs = $conexao->query($sql);
 
 			if($rs){
@@ -108,15 +117,14 @@
 			$conexao = $this->conexao;
 
 			$sql = 'SELECT mov.*, cc.nome as nome_cc, contas.nome as nome_conta,
-					date_format(mov.data, "%d/%m/%Y") as data_formatada,
-					format(mov.valor, 2, "de_DE") as valor_formatado
+					date_format(mov.data, "%d/%m/%Y") as data_formatada
 					FROM movimentacao as mov
 					INNER JOIN centro_custos as cc 
 					ON mov.id_centro_custos = cc.id 
 					INNER JOIN contas
 					ON mov.id_conta = contas.id '.
 					$tipo.' 
-					ORDER BY data ASC '.
+					ORDER BY data DESC '.
 					$limit;
 
 			$rs = $conexao->query($sql);
@@ -141,7 +149,7 @@
 				$movimentacao->setTipoMov($conexao->result($rs, $i, 'tipo_mov'));
 				$movimentacao->setData($conexao->result($rs, $i, 'data_formatada'));
 				$movimentacao->setDescricao($conexao->result($rs, $i, 'descricao'));
-				$movimentacao->setValor($conexao->result($rs, $i, 'valor_formatado'));
+				$movimentacao->setValor($conexao->result($rs, $i, 'valor'));
 
 				$movs[] = $movimentacao;
 
@@ -153,12 +161,10 @@
 
 		public function buscarMovimentacao($id){
 
-
 			$conexao = $this->conexao;
 
 			$sql = 'SELECT mov.*, cc.nome as nome_cc, contas.nome as nome_conta,
-					date_format(mov.data, "%d/%m/%Y") as data_formatada,
-					format(mov.valor, 2, "de_DE") as valor_formatado
+					date_format(mov.data, "%d/%m/%Y") as data_formatada
 					FROM movimentacao as mov
 					INNER JOIN centro_custos as cc 
 					ON mov.id_centro_custos = cc.id 
@@ -184,15 +190,19 @@
 			$movimentacao->setTipoMov($conexao->result($rs, 0, 'tipo_mov'));
 			$movimentacao->setData($conexao->result($rs, 0, 'data'));
 			$movimentacao->setDescricao($conexao->result($rs, 0, 'descricao'));
-			$movimentacao->setValor($conexao->result($rs, 0, 'valor_formatado'));
+			$movimentacao->setValor($conexao->result($rs, 0, 'valor'));
 			
 			return $movimentacao;
 
 		}
 
-		public function salvarLog($movimentacao){
+		public function salvarLog($movimentacao, $dir=''){
 
-			$arquivo = fopen('../log.txt', 'a');
+			if(empty($dir)){
+				$dir = '../log.txt';
+			}
+
+			$arquivo = fopen($dir, 'a');
 			
 			$log = date('d/m/Y', strtotime($movimentacao->getData()));
 			$log .= ' - '.$movimentacao->getTipoMov();

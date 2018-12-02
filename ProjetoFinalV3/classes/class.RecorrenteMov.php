@@ -7,6 +7,7 @@
 
 		private $idRecorrente;
 		private $idMovimentacao;
+		private $data;
 
 		public function getIdRecorrente(){
 			return $this->idRecorrente;
@@ -22,6 +23,14 @@
 
 		public function setIdMovimentacao($idMovimentacao){
 			$this->idMovimentacao = $idMovimentacao;
+		}
+
+		public function getData(){
+			return $this->data;
+		}
+
+		public function setData($data){
+			$this->data = $data;
 		}
 	
 	}

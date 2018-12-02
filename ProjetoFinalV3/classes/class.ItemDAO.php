@@ -24,7 +24,8 @@
 
 			$sql = 'INSERT INTO item
 					VALUES (NULL,
-							"'.$descricao.'")';
+							"'.$descricao.'",
+								1)';
 
 			$rs = $conexao->query($sql);
 
@@ -38,7 +39,8 @@
 
 			$id = $item->getId();
 
-			$sql = 'DELETE FROM item
+			$sql = 'UPDATE item
+					SET status = 0
 					WHERE id = '.$id;
 
 			$rs = $conexao->query($sql);
@@ -68,7 +70,9 @@
 
 			$conexao = $this->conexao;
 
-			$sql = 'SELECT * FROM item';
+			$sql = 'SELECT * 
+					FROM item
+					WHERE status = 1';
 
 			$rs = $conexao->query($sql);
 			$linSelecionadas = $conexao->rows_result($rs);
