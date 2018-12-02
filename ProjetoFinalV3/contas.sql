@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 02-Nov-2018 às 00:17
+-- Generation Time: 02-Dez-2018 às 18:09
 -- Versão do servidor: 10.1.30-MariaDB
 -- PHP Version: 5.6.33
 
@@ -30,8 +30,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `centro_custos` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(45) NOT NULL
+  `nome` varchar(45) NOT NULL,
+  `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `centro_custos`
+--
+
+INSERT INTO `centro_custos` (`id`, `nome`, `status`) VALUES
+(1, 'Casa', 0),
+(2, 'Academia', 1),
+(3, 'SalÃ¡rio', 1),
+(4, 'Teste', 0),
+(5, 'teste2', 0),
+(6, 'Casa', 1);
 
 -- --------------------------------------------------------
 
@@ -41,8 +54,19 @@ CREATE TABLE `centro_custos` (
 
 CREATE TABLE `contas` (
   `id` int(10) UNSIGNED NOT NULL,
-  `nome` varchar(45) NOT NULL
+  `nome` varchar(45) NOT NULL,
+  `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `contas`
+--
+
+INSERT INTO `contas` (`id`, `nome`, `status`) VALUES
+(2, 'Bradesco', 0),
+(3, 'Banrisull', 0),
+(4, 'Santander', 1),
+(5, 'Banrisul', 1);
 
 -- --------------------------------------------------------
 
@@ -52,15 +76,16 @@ CREATE TABLE `contas` (
 
 CREATE TABLE `item` (
   `id` int(11) NOT NULL,
-  `descricao` varchar(100) DEFAULT NULL
+  `descricao` varchar(100) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `item`
 --
 
-INSERT INTO `item` (`id`, `descricao`) VALUES
-(19, 'produto 1');
+INSERT INTO `item` (`id`, `descricao`, `status`) VALUES
+(1, 'cadeira inox', 0);
 
 -- --------------------------------------------------------
 
@@ -77,6 +102,36 @@ CREATE TABLE `movimentacao` (
   `descricao` varchar(100) NOT NULL,
   `valor` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `movimentacao`
+--
+
+INSERT INTO `movimentacao` (`id`, `id_centro_custos`, `id_conta`, `tipo_mov`, `data`, `descricao`, `valor`) VALUES
+(2, 2, 4, 'debito', '0000-00-00', 'Tenho desc', '100.00'),
+(4, 2, 4, 'debito', '2018-12-29', 'Comprei uma luva', '230.00'),
+(6, 2, 5, 'debito', '2018-12-27', 'Comprei uma pasta proteica', '100.00'),
+(7, 6, 5, 'debito', '2018-12-28', 'Tapete vermelho', '100.00'),
+(43, 2, 5, 'debito', '2018-12-02', 'Mensalidade academia', '100.00'),
+(45, 2, 5, 'credito', '2018-12-02', '', '10.00'),
+(46, 2, 5, 'debito', '2018-12-02', '', '100.00'),
+(48, 3, 4, 'credito', '2018-12-02', 'ganhei uma grana', '100.00'),
+(49, 3, 5, 'debito', '2018-12-02', 'escola', '200.00'),
+(52, 3, 5, 'credito', '2018-12-02', '', '50.00'),
+(53, 3, 4, 'credito', '2018-12-02', 'Recebi meu salÃ¡rio', '1000.00'),
+(56, 3, 5, 'credito', '2018-12-02', 'Ganho um troco', '100.00'),
+(58, 2, 5, 'debito', '2018-12-02', 'Perdi 20 mango', '20.00'),
+(59, 2, 5, 'debito', '2018-12-02', 'Perdi 20 mango', '20.00'),
+(60, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(61, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(62, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(63, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(64, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(65, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(66, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(67, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(68, 2, 4, 'credito', '2018-12-02', '', '10.00'),
+(69, 2, 4, 'credito', '2018-12-02', '', '10.00');
 
 -- --------------------------------------------------------
 
@@ -112,6 +167,13 @@ CREATE TABLE `recorrentes` (
   `valor` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `recorrentes`
+--
+
+INSERT INTO `recorrentes` (`id`, `id_centro_custos`, `id_conta`, `tipo_mov`, `dia`, `descricao`, `valor`) VALUES
+(4, 2, 4, 'credito', 2, '', '10.00');
+
 -- --------------------------------------------------------
 
 --
@@ -120,8 +182,16 @@ CREATE TABLE `recorrentes` (
 
 CREATE TABLE `recorrentes_movimentacao` (
   `id_recorrentes` int(10) UNSIGNED NOT NULL,
-  `id_movimentacao` int(10) UNSIGNED NOT NULL
+  `id_movimentacao` int(10) UNSIGNED NOT NULL,
+  `data` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `recorrentes_movimentacao`
+--
+
+INSERT INTO `recorrentes_movimentacao` (`id_recorrentes`, `id_movimentacao`, `data`) VALUES
+(4, 69, '2018-12-02');
 
 --
 -- Indexes for dumped tables
@@ -185,25 +255,25 @@ ALTER TABLE `recorrentes_movimentacao`
 -- AUTO_INCREMENT for table `centro_custos`
 --
 ALTER TABLE `centro_custos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `contas`
 --
 ALTER TABLE `contas`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `movimentacao`
 --
 ALTER TABLE `movimentacao`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `parcelas`
@@ -215,7 +285,7 @@ ALTER TABLE `parcelas`
 -- AUTO_INCREMENT for table `recorrentes`
 --
 ALTER TABLE `recorrentes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
