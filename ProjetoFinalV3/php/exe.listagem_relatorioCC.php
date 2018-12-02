@@ -84,10 +84,11 @@
 	          	<tbody>
 
 		            <?php
-
+				
+				$totalDebito = 0;
+			
 		            	if(isset($cc_debitos)){
 
-		            		$totalDebito = 0;
 
 			                foreach ($cc_debitos as $cc_deb) {
 			     
@@ -146,10 +147,11 @@
 	          	<tbody>
 
 		            <?php
+		
+				$totalCredito = 0;
 
 		            	if(isset($cc_creditos)){
 
-		            		$totalCredito = 0;
 
 			                foreach ($cc_creditos as $cc_cred) {
 			     
