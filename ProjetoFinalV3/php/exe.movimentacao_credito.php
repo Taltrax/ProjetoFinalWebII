@@ -2,6 +2,13 @@
 
 <?php require_once('index.movimentacao_credito.php'); ?>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Movimentação</li>
+    <li class="breadcrumb-item active" aria-current="page">Crédito</li>
+  </ol>
+</nav>
+
 <div class="container-fluid">
 
 	<!-- Mensagens de alerta -->
@@ -124,13 +131,13 @@
 							<select name="f_centro_custos" id="f_centro_custos_alt" class="form-control">
 								<?php
 
+									echo '<option value='.$credito->getCentroCustos()->getId().' selected="selected">'.$credito->getCentroCustos()->getNome().'</option>';
+
 									foreach ($centrosCustos as $centroC) {
 
-										if($centroC->getId() == $credito->getCentroCustos()->getId()){
-											echo '<option value='.$centroC->getId().' selected="selected">'.$centroC->getNome().'</option>';
+										if($centroC->getId() != $credito->getCentroCustos()->getId()){
+											echo '<option value='.$centroC->getId().'>'.$centroC->getNome().'</option>';
 										
-										}else{
-											echo '<option value='.$centroC->getId().' checked="checked">'.$centroC->getNome().'</option>';
 										}
 										
 									}
@@ -142,13 +149,13 @@
 							<select name="f_conta" id="f_conta_alt" class="form-control">
 								<?php
 
+									echo '<option value='.$credito->getConta()->getId().' selected="selected">'.$credito->getConta()->getNome().'</option>';
+
 									foreach ($contas as $conta) {
 
-										if($conta->getId() == $credito->getConta()->getId()){
-											echo '<option value='.$conta->getId().' selected="selected">'.$conta->getNome().'</option>';
-										
-										}else{
+										if($conta->getId() != $credito->getConta()->getId()){
 											echo '<option value='.$conta->getId().'>'.$conta->getNome().'</option>';
+										
 										}
 										
 									}
@@ -214,7 +221,7 @@
 								
 								echo	
 									'<tr>
-										<td class="text-center" scope="row">R$ '.$credito->getValor().'</td>
+										<th class="text-center" scope="row">R$ '.number_format($credito->getValor(), 2, ',', '.').'</th>
 										<td class="text-center">'.$credito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$credito->getData().'</td>	
 										<td class="text-center">'.$credito->getConta()->getNome().'</td>

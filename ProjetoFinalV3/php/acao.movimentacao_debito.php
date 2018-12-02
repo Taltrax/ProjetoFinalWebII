@@ -6,7 +6,6 @@
 	*/
 
 	require_once('../classes/class.MovimentacaoDAO.php');
-	require_once('../classes/class.ContaDAO.php');
 
 	switch($_REQUEST['acao']){
 
@@ -20,24 +19,14 @@
 			
 			$valor = str_replace(['.',','], ['','.'], $_POST['f_valor']);
 
-			$contaDAO = new ContaDAO();
 			$movimentacao = new Movimentacao();
 
 			$movimentacao->getCentroCustos()->setId($idCentroCustos);
-			$movimentacao->setConta($contaDAO->buscar($idConta));
+			$movimentacao->getConta()->setId($idConta);
 			$movimentacao->setTipoMov($tipoMov);
 			$movimentacao->setData($data);
 			$movimentacao->setDescricao($descricao);
 			$movimentacao->setValor($valor);
-
-			if(!$movimentacao->getConta()->removeValor($valor)){
-
-				$erro = urlencode("Saldo insuficiente!");
-				die(header('Location: ../index.php?secao=movimentacao&modulo='.$tipoMov.'&erro='.$erro));
-			
-			}
-
-			$contaDAO->altConta($movimentacao->getConta());
 
 			$movDAO = new MovimentacaoDAO();
 

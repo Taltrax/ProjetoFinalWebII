@@ -6,6 +6,13 @@
 
 <?php require_once('index.movimentacao_debito.php'); ?>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Movimentação</li>
+    <li class="breadcrumb-item active" aria-current="page">Débito</li>
+  </ol>
+</nav>
+
 <div class="container-fluid">
 
 	<!-- Mensagens de alerta -->
@@ -194,7 +201,7 @@
 					<thead class="thead-dark">
 
 						<tr>
-							<th class="bg-warning border-top-0" colspan="7">Débitos</th>
+							<th class="bg-danger border-top-0" colspan="7">Débitos</th>
 						</tr>
 
 						<tr>
@@ -218,7 +225,7 @@
 								
 								echo	
 									'<tr>
-										<td class="text-center" scope="row">R$ '.$debito->getValor().'</td>
+										<th class="text-center" scope="row">R$ '.number_format($debito->getValor(), 2, ',', '.').'</th>
 										<td class="text-center">'.$debito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$debito->getData().'</td>	
 										<td class="text-center">'.$debito->getConta()->getNome().'</td>

@@ -2,7 +2,7 @@
 
 <?php require_once('index.dashboard_home.php'); ?>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
 
   <div class="row mb-4">
     <div class="col-8 mx-auto">
@@ -15,7 +15,7 @@
             
             echo '
               <button type="button" class="btn btn-info">
-                <img class="mr-2 mb-1" src="img/icones/wallet_icon.png"/>'.$conta->getNome().' <span class="badge badge-light ml-2">R$ '.$conta->getSaldo().'</span>
+                <img class="mr-2 mb-1" src="img/icones/wallet_icon.png"/>'.$conta->getNome().' <span class="badge badge-light ml-2">R$ '.number_format($conta->getSaldo(), 2, ',', '.').'</span>
               </button>';
           }
 
@@ -60,7 +60,7 @@
                   
                     echo  
                       '<tr>
-                        <th class="text-center" scope="row">R$ '.$debito->getValor().'</th>
+                        <th class="text-center" scope="row">R$ '.number_format($debito->getValor(), 2, ',', '.').'</th>
                         <td class="text-center">'.$debito->getCentroCustos()->getNome().'</td>
                         <td class="text-center">'.$debito->getData().'</td> 
                         <td class="text-center">'.$debito->getConta()->getNome().'</td>
@@ -130,10 +130,10 @@
 
                     echo  
                       '<tr>
-                        <td class="text-center" scope="row">
+                        <td class="text-center">
                           <img width="20" height="20" src='.$img.' />
                         </td>
-                        <td class="text-center" scope="row">R$ '.$movimentacao->getValor().'</td>
+                        <th class="text-center" scope="row">R$ '.number_format($movimentacao->getValor(), 2, ',', '.').'</th>
                         <td class="text-center">'.$movimentacao->getCentroCustos()->getNome().'</td>
                         <td class="text-center">'.$movimentacao->getData().'</td> 
                         <td class="text-center">'.$movimentacao->getConta()->getNome().'</td>

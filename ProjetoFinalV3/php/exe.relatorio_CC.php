@@ -1,63 +1,113 @@
 <!--	
 	Criado por Guilherme Mayer
 	em 26/11/18 
+
+	Modificado por João Pedro em 01/12/2018
 -->
 
-<?php require_once("index.relatorio_CC.php"); ?>
+<?php
+	require_once("index.relatorioCC.php");
+?>
 
-<div class="container clearfix">
-	
-	<h5 class="text-center">Relatório - Centro de Custo</h5> <br>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Relatório</li>
+    <li class="breadcrumb-item active" aria-current="page">Centro de custos</li>
+  </ol>
+</nav>
 
-	<form class="col-md-4 offset-md-4">
-		
-	    <div class="form-group">
-	    	<label class="mr-sm-2"> Tipo de Movimentação</label> <br>
-	    	<label class="checkbox-inline mr-sm-2"><input type="checkbox" value="debito"> Débito </label>
-			<label class="checkbox-inline mr-sm-2"><input type="checkbox" value="credito"> Crédito </label>
-			<label class="checkbox-inline mr-sm-2"><input type="checkbox" value="null" checked> Todos </label>
-	    </div>
+<div class="container-fluid">
 
-		<?php
-			if($contas!=false){
-
-				echo '<div class="form-group">
-					  <label class="mr-sm-2">Contas</label>
-	                  <select class="custom-select" name="conta">';
-
-				echo '<option selected="selected" value="todas">Todas</option>';
-
-				for($i=0;$i<count($contas);$i++){
-					echo '<option value="$contas[$i]->getId()">';
-					echo $contas[$i]->getNome().'</option>';
-				}
-				
-				echo '</select></div>';
-			}
-		?>
-		
-		<label class="mr-sm-2">Data</label>
-		<div class="form-inline">
-			<label class="mr-sm-2">Mês</label>
-			<select class="custom-select" name="mes"> 
-				<?php			
-					setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-					for($i=1;$i<=12;$i++){
-						print('<option value="'.$i.'">'.
-							utf8_encode(ucfirst(strftime("%B", strtotime('2016-'.$i.'-22'))))
-						     .'</option>');
-					}
-				?>
-			</select>
-			<label class="px-2">Ano</label>
-				<input class="custom-select" type="number" min="2018" max="2099" value="2018" name="ano">
-			</div>
-		
-		<div class="form-group">
-			<br>
-			<button type="submit" class="btn btn-primary"> Pesquisar </button>
+	<div class="row mb-2">
+		<div class="col-8 mx-auto">
+			<button type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#f_form_relatorio" data-whatever="@mdo">Filtros</button>
 		</div>
+	</div>
 
-	</form>
+	<div class="modal fade" id="f_form_relatorio" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<h5 class="modal-title">Relatório centro de custos</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+
+				<div class="modal-body">
+					<form method="POST" action="index.php?secao=relatorio&modulo=cc">
+
+						<div class="form-group">
+							
+							<label for="f_tipo_mov">Tipo de movimentação</label>
+							<select name="f_tipo_mov" id="f_tipo_mov" class="form-control">
+								
+								<option value="">Todos</option>
+								<option value="debito" <?php if($filtro_tipoMov == 'debito'){?> selected="selected" <?php }?>>Débito</option>
+								<option value="credito" <?php if($filtro_tipoMov == 'credito'){?> selected="selected" <?php }?>>Crédito</option>
+							
+							</select>
+
+							<label for="f_conta">Conta</label>
+							<select name="f_conta" id="f_conta" class="form-control">
+								
+								<option selected="selected"></option>
+								
+								<?php
+
+									foreach ($contas as $conta) {
+
+										if($filtro_conta == $conta->getId()){
+											echo '<option value='.$conta->getId().' selected="selected">'.$conta->getNome().'</option>';
+										}else{
+											echo '<option value='.$conta->getId().'>'.$conta->getNome().'</option>';
+										}
+
+									}
+
+								?>
+
+							</select>
+
+							<label for="f_mes" class="col-form-label">Mês</label>
+							<select name="f_mes" id="f_mes" class="form-control">
+								
+								<option value="">Todos</option>
+								<option value="1" <?php if($filtro_mes == 1){?> selected="selected" <?php }?>>Janeiro</option>
+								<option value="2" <?php if($filtro_mes == 2){?> selected="selected" <?php }?>>Fevereiro</option>
+								<option value="3" <?php if($filtro_mes == 3){?> selected="selected" <?php }?>>Março</option>
+								<option value="4" <?php if($filtro_mes == 4){?> selected="selected" <?php }?>>Abril</option>
+								<option value="5" <?php if($filtro_mes == 5){?> selected="selected" <?php }?>>Maio</option>
+								<option value="6" <?php if($filtro_mes == 6){?> selected="selected" <?php }?>>Junho</option>
+								<option value="7" <?php if($filtro_mes == 7){?> selected="selected" <?php }?>>Julho</option>
+								<option value="8" <?php if($filtro_mes == 8){?> selected="selected" <?php }?>>Agosto</option>
+								<option value="9" <?php if($filtro_mes == 9){?> selected="selected" <?php }?>>Setembro</option>
+								<option value="10" <?php if($filtro_mes == 10){?> selected="selected" <?php }?>>Outubro</option>
+								<option value="11" <?php if($filtro_mes == 11){?> selected="selected" <?php }?>>Novembro</option>
+								<option value="12" <?php if($filtro_mes == 12){?> selected="selected" <?php }?>>Dezembro</option>
+							
+							</select>
+
+							<label for="f_ano" class="col-form-label">Ano</label>
+							<input type="number" class="form-control" name="f_ano" id="f_ano" value="<?php echo $ano_filtro?>">
+							
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Confirmar</button>
+						</div>
+
+						<input type="hidden" name="ativar" value="1">
+
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<?php require_once('php/exe.listagem_relatorioCC.php'); ?>
 
 </div>

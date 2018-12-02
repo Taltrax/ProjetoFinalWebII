@@ -22,7 +22,7 @@
 						foreach($contas as $conta){
 							echo '<tr> 
 									<td class="text-center">'.$conta->getNome().'</td> 
-									<td class="text-center">R$ '.$conta->getSaldo().'</td> 
+									<td class="text-center">R$ '.number_format($conta->getSaldo(), 2, ',', '.').'</td> 
 									<td class="text-center"> 
 										<a href="index.php?secao=manter&modulo=conta&id='.$conta->getId().'"><img src="img/icones/pencil_icon.png" title="Editar"></a>
 									</td>

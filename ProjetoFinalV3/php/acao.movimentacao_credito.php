@@ -6,7 +6,6 @@
 	*/
 
 	require_once('../classes/class.MovimentacaoDAO.php');
-	require_once('../classes/class.ContaDAO.php');
 
 	switch($_REQUEST['acao']){
 
@@ -20,18 +19,14 @@
 			
 			$valor = str_replace(['.',','], ['','.'], $_POST['f_valor']);
 
-			$contaDAO = new ContaDAO();
 			$movimentacao = new Movimentacao();
 
 			$movimentacao->getCentroCustos()->setId($idCentroCustos);
-			$movimentacao->setConta($contaDAO->buscar($idConta));
+			$movimentacao->getConta()->setId($idConta);
 			$movimentacao->setTipoMov($tipoMov);
 			$movimentacao->setData($data);
 			$movimentacao->setDescricao($descricao);
 			$movimentacao->setValor($valor);
-
-			$movimentacao->getConta()->addValor($valor);
-			$contaDAO->altConta($movimentacao->getConta());
 
 			$movDAO = new MovimentacaoDAO();
 
@@ -92,10 +87,9 @@
 
 			$id = $_REQUEST['id'];
 
+			$movDAO = new MovimentacaoDAO();
 			$movimentacao = new Movimentacao();
 			$movimentacao->setId($id);
-
-			$movDAO = new MovimentacaoDAO();
 
 			if($movDAO->delMovimentacao($movimentacao)){
 
