@@ -2,13 +2,17 @@
 
 	/*
 		Classe criada por Guilherme Mayer em 04/10/2018
+		REV 1 - Guilherme Mayer em 04/12/2018
+		Desc: Foram substituídos os id's de CentroCustos,
+		      Conta e Item pelas classes em si, bem como,
+		      seus métodos adaptados.
 	*/
 	class Parcela{
 
 		private $id;
-		private $idCentroCustos;
-		private $idConta;
-		private $idItem;
+		private $CentroCustos;
+		private $Conta;
+		private $Item;
 		private $tipoMov;
 		private $parcela;
 		private $vencimento;
@@ -23,20 +27,28 @@
 			$this->id = $id;
 		}
 
-		public function getIdCentroCustos(){
-			return $this->idCentroCustos;
+		public function getCentroCustos(){
+			return $this->CentroCustos;
 		}
 
-		public function setIdCentroCustos($idCentroCustos){
-			$this->idCentroCustos = $idCentroCustos;
+		public function setCentroCustos($CentroCustos){
+			$this->CentroCustos = $CentroCustos;
 		}
 
-		public function getIdConta(){
-			return $this->idConta;
+		public function getConta(){
+			return $this->Conta;
 		}
 
-		public function setIdConta($idConta){
-			$this->idConta = $idConta;
+		public function setConta($Conta){
+			$this->Conta = $Conta;
+		}
+
+		public function getItem(){
+			return $this->Item;
+		}
+
+		public function setConta($Item){
+			$this->Item = $Item;
 		}
 
 		public function getTipoMov(){
