@@ -35,6 +35,7 @@
 	<body>
 
 		<?php
+			require_once('php/index.movimentacao_automatico.php');
 			require_once('php/exe.menu.php');
 			require_once('php/exe.'.$pg.'.php');
 		?>
