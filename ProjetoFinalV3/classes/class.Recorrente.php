@@ -3,15 +3,26 @@
 	/*
 		Classe criada por Guilherme Mayer em 04/10/2018
 	*/
+
+	require_once('class.CentroCustos.php');
+	require_once('class.Conta.php');
+
 	class Recorrente{
 
 		private $id;
-		private $idCentroCustos;
-		private $idConta;
+		private $centroCustos;
+		private $conta;
 		private $tipoMov;
 		private $dia;
 		private $descricao;
 		private $valor;
+
+		public function Recorrente(){
+
+			$this->centroCustos = new CentroCustos();
+			$this->conta = new Conta();
+
+		}
 
 		public function getId(){
 			return $this->id;
@@ -21,20 +32,20 @@
 			$this->id = $id;
 		}
 
-		public function getIdCentroCustos(){
-			return $this->idCentroCustos;
+		public function getCentroCustos(){
+			return $this->centroCustos;
 		}
 
-		public function setIdCentroCustos($idCentroCustos){
-			$this->idCentroCustos = $idCentroCustos;
+		public function setCentroCustos($centroCustos){
+			$this->centroCustos = $centroCustos;
 		}
 
-		public function getIdConta(){
-			return $this->idConta;
+		public function getConta(){
+			return $this->conta;
 		}
 
-		public function setIdConta($idConta){
-			$this->idConta = $idConta;
+		public function setConta($conta){
+			$this->conta = $conta;
 		}
 
 		public function getTipoMov(){

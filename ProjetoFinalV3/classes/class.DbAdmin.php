@@ -134,7 +134,7 @@ class DbAdmin
 	
 	
 	//método que retorna o o ultimo ID inserido no BD
-	public function lastid($res)
+	public function lastid()
 	{
 	
 		switch($this->tipo){
@@ -152,7 +152,8 @@ class DbAdmin
 			break;
 			
 		}// fim switch($this->tipo){
-		
+
+		return $num;
 	}// fim public function lastid($res)
 	
 	

@@ -7,6 +7,7 @@
 		
 		private $id;
 		private $nome;
+		private $status;
 
 		public function getId(){
 			return $this->id;
@@ -22,6 +23,14 @@
 
 		public function setNome($nome){
 			$this->nome = $nome;
+		}
+
+		public function getStatus(){
+			return $this->status;
+		}
+
+		public function setStatus($status){
+			$this->status = $status;
 		}
 
 	}

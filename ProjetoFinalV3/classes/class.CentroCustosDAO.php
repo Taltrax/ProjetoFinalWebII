@@ -20,39 +20,46 @@
 
 		public function addCentroCustos($centroCustos){
 
+			$conexao = $this->conexao;
+
 			$nome = $centroCustos->getNome(); 
 
 			$sql = 'INSERT INTO centro_custos
 					VALUES (NULL,
-							"'.$nome.'")';
+							"'.$nome.'",
+								1)';
 
-			$rs = $this->conexao->query($sql);
-			//$rs = $conexao->query($sql);
+			$rs = $conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
 		}
 
 		public function delCentroCustos($centroCustos){
 
+			$conexao = $this->conexao;
+
 			$id = $centroCustos->getId();
 
-			$sql = 'DELETE FROM centro_custos
+			$sql = 'UPDATE centro_custos
+					SET status = 0
 					WHERE id = '.$id;
 
-			$rs = $this->conexao->query($sql);
+			$rs = $conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
 		}
 
 		public function altCentroCustos($centroCustos){
+
+			$conexao = $this->conexao;
 
 			$id = $centroCustos->getId();
 			$nome = $centroCustos->getNome();
@@ -61,11 +68,11 @@
 					SET nome = "'.$nome.'"
 					WHERE id = '.$id;
 
-			$rs = $this->conexao->query($sql);
+			$rs = $conexao->query($sql);
 
-			//if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
-			//}
+			}
 
 			return false;
 		}
@@ -74,12 +81,15 @@
 
 			$dba = $this->conexao;
 			
-			$sql = 'SELECT *FROM centro_custos';
+			$sql = 'SELECT * 
+					FROM centro_custos
+					WHERE status = 1';
 
 			$res = $dba->query($sql);
 			$num = $dba->rows_result($res);
 
 			for($i=0;$i<$num;$i++){
+
 				$id = $dba->result($res,$i,'id');
 				$nome = $dba->result($res,$i,'nome');
 

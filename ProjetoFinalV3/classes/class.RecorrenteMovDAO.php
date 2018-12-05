@@ -19,17 +19,20 @@
 
 		public function addRecorrenteMov($recorrenteMov){
 
+			$conexao = $this->conexao;
+
 			$idRecorrente = $recorrenteMov->getIdRecorrente();
 			$idMovimentacao = $recorrenteMov->getIdMovimentacao();
+			$data = $recorrenteMov->getData();
 
 			$sql = 'INSERT INTO recorrentes_movimentacao
-					VALUES (NULL,
-							'.$idRecorrente.',
-							'.$idMovimentacao.')';
+					VALUES ('.$idRecorrente.',
+							'.$idMovimentacao.',
+							"'.$data.'")';
 
 			$rs = $conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
 			}
 
@@ -38,23 +41,27 @@
 
 		public function delRecorrenteMov($recorrenteMov){
 
+			$conexao = $this->conexao;
+
 			$idRecorrente = $recorrenteMov->getIdRecorrente();
 			$idMovimentacao = $recorrenteMov->getIdMovimentacao();
 
 			$sql = 'DELETE FROM recorrentes_movimentacao
 					WHERE id_recorrentes = '.$idRecorrente.'
-						  && id_movimentacao = '.$idMovimentacao;
-
+						  OR id_movimentacao = '.$idMovimentacao;
+						  
 			$rs = $conexao->query($sql);
 
-			if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
 			}
 
 			return false;
 		}
 
-		public function alteraRecorrenteMov($recorrenteMov){
+		public function altRecorrenteMov($recorrenteMov){
+
+			$conexao = $this->conexao;
 
 			$idRecorrente = $recorrenteMov->getIdRecorrente();
 			$idMovimentacao = $recorrenteMov->getIdMovimentacao();
@@ -67,11 +74,38 @@
 
 			$rs = $conexao->query($rs);
 
-			if($conexao->rows_affected($rs) == 1){
+			if($rs){
 				return true;
 			}
 
 			return false;
+		}
+
+		public function verificaLancamento($recorrente){
+
+			$conexao = $this->conexao;
+			
+			$idRecorrente = $recorrente->getId();
+			$diaAtual = date('d');
+			$mesAtual = date('m');
+
+			$sql = 'SELECT rec.id
+					FROM recorrentes AS rec
+					INNER JOIN recorrentes_movimentacao AS rm
+					ON rec.id = rm.id_recorrentes
+					WHERE '.$diaAtual.' >= rec.dia
+					AND '.$mesAtual.' = MONTH(rm.data)
+					AND id_recorrentes = '.$idRecorrente;
+
+			$rs = $conexao->query($sql);
+			$linhas = $conexao->rows_result($rs);
+			
+			if($linhas == 1){
+				return true;
+			}
+
+			return false;
+
 		}
 
 	}
