@@ -2,6 +2,13 @@
 
 <?php require_once('index.movimentacao_credito.php'); ?>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Movimentação</li>
+    <li class="breadcrumb-item active" aria-current="page">Crédito</li>
+  </ol>
+</nav>
+
 <div class="container-fluid">
 
 	<!-- Mensagens de alerta -->
@@ -41,7 +48,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php" name="formulario">
+					<form method="POST" action="php/acao.movimentacao_credito.php" name="formulario">
 
 						<div class="form-group">
 							
@@ -113,7 +120,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php">
+					<form method="POST" action="php/acao.movimentacao_credito.php">
 
 						<div class="form-group">
 							
@@ -124,13 +131,13 @@
 							<select name="f_centro_custos" id="f_centro_custos_alt" class="form-control">
 								<?php
 
+									echo '<option value='.$credito->getCentroCustos()->getId().' selected="selected">'.$credito->getCentroCustos()->getNome().'</option>';
+
 									foreach ($centrosCustos as $centroC) {
 
-										if($centroC->getId() == $credito->getCentroCustos()->getId()){
-											echo '<option value='.$centroC->getId().' selected="selected">'.$centroC->getNome().'</option>';
+										if($centroC->getId() != $credito->getCentroCustos()->getId()){
+											echo '<option value='.$centroC->getId().'>'.$centroC->getNome().'</option>';
 										
-										}else{
-											echo '<option value='.$centroC->getId().' checked="checked">'.$centroC->getNome().'</option>';
 										}
 										
 									}
@@ -142,13 +149,13 @@
 							<select name="f_conta" id="f_conta_alt" class="form-control">
 								<?php
 
+									echo '<option value='.$credito->getConta()->getId().' selected="selected">'.$credito->getConta()->getNome().'</option>';
+
 									foreach ($contas as $conta) {
 
-										if($conta->getId() == $credito->getConta()->getId()){
-											echo '<option value='.$conta->getId().' selected="selected">'.$conta->getNome().'</option>';
-										
-										}else{
+										if($conta->getId() != $credito->getConta()->getId()){
 											echo '<option value='.$conta->getId().'>'.$conta->getNome().'</option>';
+										
 										}
 										
 									}
@@ -198,7 +205,7 @@
 							<th class="text-center" scope="col">C. Custo</th>
 							<th class="text-center" scope="col">Data</th>
 							<th class="text-center" scope="col">Conta</th>
-							<th class="text-center" scope="col-md">Descricao</th>
+							<th class="text-center" scope="col-md">Descrição</th>
 							<th class="text-center" scope="col" colspan="2" class="text-center">Ações</th>
 						</tr>
 
@@ -214,7 +221,7 @@
 								
 								echo	
 									'<tr>
-										<th class="text-center" scope="row">R$ '.$credito->getValor().'</th>
+										<th class="text-center" scope="row">R$ '.number_format($credito->getValor(), 2, ',', '.').'</th>
 										<td class="text-center">'.$credito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$credito->getData().'</td>	
 										<td class="text-center">'.$credito->getConta()->getNome().'</td>
@@ -230,7 +237,7 @@
 											</a>
 										</td>
 										<td class="text-center">
-											<a href="php/acao.movimentacao.php?acao=deletar&f_tipo_mov=credito&id='.$credito->getId().'">
+											<a href="php/acao.movimentacao_credito.php?acao=deletar&id='.$credito->getId().'">
 												<img src="img/icones/delete_icon.png" title="Deletar" />
 											</a>
 										</td>

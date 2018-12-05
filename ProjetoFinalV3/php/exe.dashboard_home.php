@@ -1,13 +1,29 @@
 <!--  Criado por João Pedro da Silva Fernandes em 15/10/18 -->
 
-<div class="container-fluid">
+<?php require_once('index.dashboard_home.php'); ?>
+
+<div class="container-fluid mt-5">
 
   <div class="row mb-4">
     <div class="col-8 mx-auto">
       
-      <button type="button" class="btn btn-info">
-        <img class="mr-2 mb-1" src="img/icones/wallet_icon.png"/>Saldo <span class="badge badge-light ml-2">R$</span>
-      </button>
+      <?php
+
+        if($contas){
+
+          foreach ($contas as $conta) {
+            
+            echo '
+              <button type="button" class="btn btn-info">
+                <img class="mr-2 mb-1" src="img/icones/wallet_icon.png"/>'.$conta->getNome().' <span class="badge badge-light ml-2">R$ '.number_format($conta->getSaldo(), 2, ',', '.').'</span>
+              </button>';
+          }
+
+        }
+
+
+      ?>
+      
     
     </div>
   </div>
@@ -29,51 +45,47 @@
               <th class="text-center" scope="col">C. Custo</th>
               <th class="text-center" scope="col">Data</th>
               <th class="text-center" scope="col">Conta</th>
-              <th class="text-center" scope="col">Descricao</th>              
+              <th class="text-center" scope="col">Descrição</th>              
             </tr>
 
           </thead>
 
           <tbody>
+            
+            <?php
 
-            <tr class="table-danger">
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-              <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste">
-              </td>
-            </tr>
+                if($debitos){
 
-            <tr class="table-warning">
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-              <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste 2">
-              </td>
-            </tr>
+                  foreach ($debitos as $debito) {
+                  
+                    echo  
+                      '<tr>
+                        <th class="text-center" scope="row">R$ '.number_format($debito->getValor(), 2, ',', '.').'</th>
+                        <td class="text-center">'.$debito->getCentroCustos()->getNome().'</td>
+                        <td class="text-center">'.$debito->getData().'</td> 
+                        <td class="text-center">'.$debito->getConta()->getNome().'</td>
+                        <td class="text-center">
 
-            <tr class="table-success">
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-              <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste 3">
-              </td>
-            </tr>
+                            <a href="#" onclick="criarModal(this)">
+                              <img src="img/icones/document_icon.png" />
+                            </a>
+                            <input type="hidden" value="'.$debito->getDescricao().'">
+
+                        </td>
+                      </tr>';
+
+                  }
+
+                }else{
+
+                  echo 
+                    '<tr>
+                      <td class="text-center" colspan=6>Nenhum registro encontrado</td>
+                    </tr>';
+
+                }
+
+            ?>
 
           </tbody>
 
@@ -92,59 +104,61 @@
           <thead class="thead-dark">
 
             <tr>
-              <th class="bg-success border-top-0" colspan="5">Últimas movimentações</th>
+              <th class="bg-success border-top-0" colspan="6">Últimas movimentações</th>
             </tr>
 
             <tr>
+              <th class="text-center" scope="col"></th>
               <th class="text-center" scope="col">Valor</th>
               <th class="text-center" scope="col">C. Custo</th>
               <th class="text-center" scope="col">Data</th>
               <th class="text-center" scope="col">Conta</th>
-              <th class="text-center" scope="col">Descricao</th>              
+              <th class="text-center" scope="col">Descrição</th>              
             </tr>
 
           </thead>
 
           <tbody>
 
-            <tr>
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-               <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste">
-              </td>
-            </tr>
+            <?php
 
-            <tr>
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-               <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste 2">
-              </td>
-            </tr>
+              if($movs){
 
-            <tr>
-              <th class="text-center" scope="row">X R$</th>
-              <td class="text-center">C. Custo X</td>
-              <td class="text-center">xx/xx/xx</td>
-              <td class="text-center">Conta X</td>
-               <td class="text-center">
-                <a href="#" onclick="criarModal(this)">
-                  <img src="img/icones/document_icon.png" />
-                </a>
-                <input type="hidden" value="teste 3">
-              </td>
-            </tr>
+                  foreach ($movs as $movimentacao) {
+                  
+                    $img = 'img/icones/'.$movimentacao->getTipoMov().'.png';
+
+                    echo  
+                      '<tr>
+                        <td class="text-center">
+                          <img width="20" height="20" src='.$img.' />
+                        </td>
+                        <th class="text-center" scope="row">R$ '.number_format($movimentacao->getValor(), 2, ',', '.').'</th>
+                        <td class="text-center">'.$movimentacao->getCentroCustos()->getNome().'</td>
+                        <td class="text-center">'.$movimentacao->getData().'</td> 
+                        <td class="text-center">'.$movimentacao->getConta()->getNome().'</td>
+                        <td class="text-center">
+                          
+                          <a href="#" onclick="criarModal(this)">
+                            <img src="img/icones/document_icon.png" />
+                          </a>
+                          
+                          <input type="hidden" value="'.$movimentacao->getDescricao().'">
+                        </td>
+                      </tr>';
+
+                  }
+
+                }else{
+
+                  echo 
+                    '<tr>
+                      <td class="text-center" colspan=6>Nenhum registro encontrado</td>
+                    </tr>';
+
+                }
+
+            ?>
 
           </tbody>
 

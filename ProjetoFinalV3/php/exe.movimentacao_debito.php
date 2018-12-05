@@ -6,6 +6,13 @@
 
 <?php require_once('index.movimentacao_debito.php'); ?>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Movimentação</li>
+    <li class="breadcrumb-item active" aria-current="page">Débito</li>
+  </ol>
+</nav>
+
 <div class="container-fluid">
 
 	<!-- Mensagens de alerta -->
@@ -45,7 +52,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php">
+					<form method="POST" action="php/acao.movimentacao_debito.php">
 
 						<div class="form-group">
 							
@@ -117,7 +124,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form method="POST" action="php/acao.movimentacao.php">
+					<form method="POST" action="php/acao.movimentacao_debito.php">
 
 						<div class="form-group">
 							
@@ -194,7 +201,7 @@
 					<thead class="thead-dark">
 
 						<tr>
-							<th class="bg-success border-top-0" colspan="7">Débitos</th>
+							<th class="bg-danger border-top-0" colspan="7">Débitos</th>
 						</tr>
 
 						<tr>
@@ -202,7 +209,7 @@
 							<th class="text-center" scope="col">C. Custo</th>
 							<th class="text-center" scope="col">Data</th>
 							<th class="text-center" scope="col">Conta</th>
-							<th class="text-center" scope="col-md">Descricao</th>
+							<th class="text-center" scope="col-md">Descrição</th>
 							<th class="text-center" scope="col" colspan="2" class="text-center">Ações</th>
 						</tr>
 
@@ -212,14 +219,13 @@
 
 						<?php
 
-							//Verificar 
 							if($debitos){
 
 								foreach ($debitos as $debito) {
 								
 								echo	
 									'<tr>
-										<th class="text-center" scope="row">R$ '.$debito->getValor().'</th>
+										<th class="text-center" scope="row">R$ '.number_format($debito->getValor(), 2, ',', '.').'</th>
 										<td class="text-center">'.$debito->getCentroCustos()->getNome().'</td>
 										<td class="text-center">'.$debito->getData().'</td>	
 										<td class="text-center">'.$debito->getConta()->getNome().'</td>
@@ -235,7 +241,7 @@
 											</a>
 										</td>
 										<td class="text-center">
-											<a href="php/acao.movimentacao.php?acao=deletar&f_tipo_mov=debito&id='.$debito->getId().'">
+											<a href="php/acao.movimentacao_debito.php?acao=deletar&id='.$debito->getId().'">
 												<img src="img/icones/delete_icon.png" title="Deletar" />
 											</a>
 										</td>

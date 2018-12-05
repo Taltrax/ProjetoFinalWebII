@@ -1,6 +1,6 @@
 <!--	Criado por João Pedro da Silva Fernandes em 15/10/18 -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm mb-5 bg-white rounded">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm bg-white rounded">
 
 	<a class="navbar-brand" href="index.php"><img src="img/icones/menu_icon.png" title="Home" /></a>
 	
@@ -43,10 +43,8 @@
 					Relatórios
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=credito">Item x</a>
-					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=debito">Item x</a>
-					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=recorrente">Item x</a>
-					<a class="dropdown-item" href="index.php?secao=movimentacao&modulo=parcela">Item x</a>
+					<a class="dropdown-item" href="index.php?secao=relatorio&modulo=cc">Centro de Custo</a>
+					<a class="dropdown-item" href="index.php?secao=relatorio&modulo=extrato">Extrato</a>
 				</div>
 			</li>
 

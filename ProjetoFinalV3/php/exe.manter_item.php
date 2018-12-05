@@ -6,6 +6,13 @@
 	require_once('index.manter_item.php');
 ?>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Manter</li>
+    <li class="breadcrumb-item active" aria-current="page">Item</li>
+  </ol>
+</nav>
+
 <div class="container-fluid">
 
 

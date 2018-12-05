@@ -11,6 +11,7 @@
 				
 				<tr class="bg-dark">
 					<th scope="col" class="text-white text-center">Nome</th>
+					<th scope="col" class="text-white text-center">Saldo</th>
 					<th scope="col" class="text-white text-center w-25" colspan="2">Ações</th>
 				</tr>
 				
@@ -21,6 +22,7 @@
 						foreach($contas as $conta){
 							echo '<tr> 
 									<td class="text-center">'.$conta->getNome().'</td> 
+									<td class="text-center">R$ '.number_format($conta->getSaldo(), 2, ',', '.').'</td> 
 									<td class="text-center"> 
 										<a href="index.php?secao=manter&modulo=conta&id='.$conta->getId().'"><img src="img/icones/pencil_icon.png" title="Editar"></a>
 									</td>
@@ -33,7 +35,7 @@
 					}else{
 
 						echo '<tr>
-								<td colspan=4>
+								<td colspan=5>
 									<p class="text-center">Nenhum Registro encontrado</p>
 								</td>
 							</tr>';
